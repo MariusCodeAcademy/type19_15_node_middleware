@@ -5,36 +5,24 @@ const cors = require('cors');
 const mysql = require('mysql2/promise');
 const { dbConfig } = require('./config');
 const { dbQueryWithData } = require('./helper');
+const { logHello, reqTime, logBody } = require('./middleware');
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-
-// my own middle ware
-const logHello = (req, res, next) => {
-  console.log('--- Hi there -- Im -- middleware!!!---');
-  // leidzia kodui vykti toliau
-  next();
-};
-const reqTime = (req, res, next) => {
-  const now = new Date();
-  const time = now.toTimeString();
-  console.log('request:', time);
-  // leidzia kodui vykti toliau
-  next();
-};
 
 // Middleware - app level
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(logHello);
-// app.use(reqTime);
+// app.use(logBody);
 
 app.get('/', (req, res) => {
   res.json('Hello World');
 });
 
+// sukurti postsRoutes.js
 // get all posts      route level middleware
 app.get('/api/posts', reqTime, async (req, res) => {
   const sql = 'SELECT * FROM posts';
@@ -43,6 +31,11 @@ app.get('/api/posts', reqTime, async (req, res) => {
   console.log('error ===', error);
 
   res.json(rows);
+});
+
+app.post('/api/posts', logBody, async (req, res) => {
+  // panaudoti dbQueryWithData kad sukurti nauja post
+  res.json('create post');
 });
 
 // testConnection();
