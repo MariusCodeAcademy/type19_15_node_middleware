@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(logHello);
-// app.use(logBody);
+app.use(logBody);
 
 app.get('/', (req, res) => {
   res.json('Hello World');
@@ -33,9 +33,24 @@ app.get('/api/posts', reqTime, async (req, res) => {
   res.json(rows);
 });
 
-app.post('/api/posts', logBody, async (req, res) => {
+app.post('/api/posts', async (req, res) => {
   // panaudoti dbQueryWithData kad sukurti nauja post
-  res.json('create post');
+  // pasiimam atsiustas reiksmes
+  const { title, author, date, body } = req.body;
+
+  const sql = `INSERT INTO posts 
+    (title, author, date, body) 
+    VALUES (?,?,?,?)`;
+  const [resulObj, error] = await dbQueryWithData(sql, [
+    title,
+    author,
+    date,
+    body,
+  ]);
+
+  console.log('error ===', error);
+
+  res.json(resulObj);
 });
 
 // testConnection();
@@ -47,12 +62,22 @@ async function testConnection() {
     await conn.query('SELECT * FROM posts LIMIT 1');
     console.log('Succesfuly connected to mysql');
   } catch (error) {
-    console.log('testConnection failed, did you start XAMPP mate???');
     console.log(error);
+    // console.log('error ===', error);
+    if (error.code === 'ECONNREFUSED') {
+      console.log('testConnection failed, did you start XAMPP mate???');
+    }
   } finally {
     if (conn) conn.end();
   }
 }
+
+// 404 - returns json
+app.use((req, res) => {
+  res.status(404).json({
+    msg: 'Page not found',
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server runing on http://localhost:${PORT}`);
