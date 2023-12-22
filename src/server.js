@@ -6,6 +6,7 @@ const mysql = require('mysql2/promise');
 const { dbConfig } = require('./config');
 const { dbQueryWithData } = require('./helper');
 const { logHello, reqTime, logBody, validatePost } = require('./middleware');
+const postsRouter = require('./routes/postsRouter');
 
 const app = express();
 
@@ -22,40 +23,7 @@ app.get('/', (req, res) => {
   res.json('Hello World');
 });
 
-// sukurti postsRoutes.js
-// get all posts      route level middleware
-app.get('/api/posts', reqTime, async (req, res) => {
-  const sql = 'SELECT * FROM posts';
-  const [rows, error] = await dbQueryWithData(sql);
-
-  console.log('error ===', error);
-
-  res.json(rows);
-});
-
-app.post('/api/posts', validatePost, async (req, res) => {
-  // panaudoti dbQueryWithData kad sukurti nauja post
-  // pasiimam atsiustas reiksmes
-  const { title, author, date, body } = req.body;
-
-  const sql = `INSERT INTO posts 
-    (title, author, date, body) 
-    VALUES (?,?,?,?)`;
-  const [resulObj, error] = await dbQueryWithData(sql, [
-    title,
-    author,
-    date,
-    body,
-  ]);
-
-  console.log('error ===', error);
-
-  res.json(resulObj);
-});
-
-app.put('/api/posts/:pId', validatePost, async (req, res) => {
-  res.json('update post');
-});
+app.use('/', postsRouter);
 
 // testConnection();
 // connect
