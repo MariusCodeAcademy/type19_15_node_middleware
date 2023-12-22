@@ -53,6 +53,10 @@ app.post('/api/posts', validatePost, async (req, res) => {
   res.json(resulObj);
 });
 
+app.put('/api/posts/:pId', validatePost, async (req, res) => {
+  res.json('update post');
+});
+
 // testConnection();
 // connect
 async function testConnection() {
