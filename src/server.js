@@ -5,7 +5,7 @@ const cors = require('cors');
 const mysql = require('mysql2/promise');
 const { dbConfig } = require('./config');
 const { dbQueryWithData } = require('./helper');
-const { logHello, reqTime, logBody } = require('./middleware');
+const { logHello, reqTime, logBody, validatePost } = require('./middleware');
 
 const app = express();
 
@@ -33,37 +33,10 @@ app.get('/api/posts', reqTime, async (req, res) => {
   res.json(rows);
 });
 
-app.post('/api/posts', async (req, res) => {
+app.post('/api/posts', validatePost, async (req, res) => {
   // panaudoti dbQueryWithData kad sukurti nauja post
   // pasiimam atsiustas reiksmes
   const { title, author, date, body } = req.body;
-
-  // validacija
-
-  if (title.trim() === '') {
-    res.status(400).json({
-      type: 'validation',
-      error: 'required field',
-      field: 'title',
-    });
-    return;
-  }
-  if (title.trim().length < 3) {
-    res.status(400).json({
-      type: 'validation',
-      error: 'must be 3 or more letters',
-      field: 'title',
-    });
-    return;
-  }
-  if (author.trim() === '') {
-    res.status(400).json({
-      type: 'validation',
-      error: 'required field',
-      field: 'author',
-    });
-    return;
-  }
 
   const sql = `INSERT INTO posts 
     (title, author, date, body) 

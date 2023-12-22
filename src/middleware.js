@@ -30,8 +30,41 @@ const logBody = (req, res, next) => {
   next();
 };
 
+const validatePost = (req, res, next) => {
+  const { title, author, date, body } = req.body;
+  // validacija
+
+  if (title.trim() === '') {
+    res.status(400).json({
+      type: 'validation',
+      error: 'required field',
+      field: 'title',
+    });
+    return;
+  }
+  if (title.trim().length < 3) {
+    res.status(400).json({
+      type: 'validation',
+      error: 'must be 3 or more letters',
+      field: 'title',
+    });
+    return;
+  }
+  if (author.trim() === '') {
+    res.status(400).json({
+      type: 'validation',
+      error: 'required field',
+      field: 'author',
+    });
+    return;
+  }
+  // nera klaidu, vaziuojam tolyn
+  next();
+};
+
 module.exports = {
   reqTime,
   logHello,
   logBody,
+  validatePost,
 };
