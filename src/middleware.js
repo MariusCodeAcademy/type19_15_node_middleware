@@ -31,7 +31,9 @@ const logBody = (req, res, next) => {
 };
 
 const validatePost = (req, res, next) => {
-  const { title, author, date, body } = req.body;
+  const {
+    title, author, date, body,
+  } = req.body;
   // validacija
 
   if (title?.trim() === '' || !title) {
