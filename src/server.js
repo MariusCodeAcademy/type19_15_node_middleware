@@ -6,6 +6,7 @@ const mysql = require('mysql2/promise');
 const { dbConfig } = require('./config');
 const { logHello, logBody } = require('./middleware');
 const postsRouter = require('./routes/postsRouter');
+const authRouter = require('./routes/authRouter');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', postsRouter);
+app.use('/', authRouter);
 
 // testConnection();
 // connect
