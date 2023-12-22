@@ -38,6 +38,33 @@ app.post('/api/posts', async (req, res) => {
   // pasiimam atsiustas reiksmes
   const { title, author, date, body } = req.body;
 
+  // validacija
+
+  if (title.trim() === '') {
+    res.status(400).json({
+      type: 'validation',
+      error: 'required field',
+      field: 'title',
+    });
+    return;
+  }
+  if (title.trim().length < 3) {
+    res.status(400).json({
+      type: 'validation',
+      error: 'must be 3 or more letters',
+      field: 'title',
+    });
+    return;
+  }
+  if (author.trim() === '') {
+    res.status(400).json({
+      type: 'validation',
+      error: 'required field',
+      field: 'author',
+    });
+    return;
+  }
+
   const sql = `INSERT INTO posts 
     (title, author, date, body) 
     VALUES (?,?,?,?)`;
