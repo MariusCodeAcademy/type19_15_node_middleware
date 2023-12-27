@@ -9,7 +9,7 @@ const postsRouter = express.Router();
 // sukurti postsRoutes.js
 // get all posts      route level middleware
 postsRouter.get('/api/posts', reqTime, async (req, res) => {
-  const sql = 'SELECT * FROM posts';
+  const sql = 'SELECT * FROM posts ORDER BY post_id DESC';
   const [rows, error] = await dbQueryWithData(sql);
 
   console.log('error ===', error);
@@ -35,7 +35,7 @@ postsRouter.post('/api/posts', validatePost, async (req, res) => {
   console.log('error ===', error);
 
   if (resulObj.affectedRows === 1) {
-    res.status(201).end();
+    res.status(201).json({ msg: 'post was created' });
     return;
   }
   res.json(resulObj);
