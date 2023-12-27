@@ -14,7 +14,7 @@ const els = {
 
   const postsArr = await getPosts(postsUrl);
   console.log('postsArr ===', postsArr);
-  //
+  render(postsArr);
   const firstPostHtml = makeSinglePostHtmlEl(postsArr[0]);
   console.log(firstPostHtml);
   // first post to container
@@ -22,7 +22,14 @@ const els = {
 
   // sukurti funkcija render(arr)
   // is arr masyvo pagamina postu html elementus ir sudeda juos i postsContainer
-  // issivalyti konteineri pries generuojant
+
+  function render(arr) {
+    // issivalyti konteineri pries generuojant
+    els.postsContainer.innerHTML = '';
+    const elArr = arr.map(makeSinglePostHtmlEl);
+
+    els.postsContainer.append(...elArr);
+  }
 
   function getPosts(url) {
     return fetch(url)
@@ -36,22 +43,35 @@ const els = {
       });
   }
 
+  /*
+{
+  "post_id": 3,
+  "title": "Update update",
+  "author": "James Rest 3000",
+  "date": "2023-12-03T22:00:00.000Z",
+  "body": "Body about post 3"
+}
+  */
   // posts to html
   // makeSinglePost
   // paimti reiksmes is pObj ir surasyti i atitinkamas post vietas
   function makeSinglePostHtmlEl(pObj) {
+    const { title, author, date, body } = pObj;
+    const formatedDate = new Date(date).toLocaleDateString('lt-LT');
     const columnEl = document.createElement('div');
     columnEl.className = 'col-lg-4 col-sm-6';
     columnEl.innerHTML = `
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Cia bus title</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">autorius</h6>
-        <p class="card-text">primi 100 texto simboliu...</p>
+        <h5 class="card-title">${title}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">${author}</h6>
+        <p class="card-text">${body.slice(0, 100)}${
+      body.length > 100 ? '...' : ''
+    }</p>
         <a href="#" class="btn btn-info text-white">Read more</a>
       </div>
       <div class="card-footer text-body-secondary">
-        data bus cia
+        ${formatedDate}
       </div>
     </div>
   `;
