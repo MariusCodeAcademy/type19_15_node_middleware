@@ -53,6 +53,14 @@ function createPost(postObj) {
         window.location.href = 'index.html';
         // return;
       }
+      return resp.json();
+    })
+    .then((data) => {
+      console.log('data ===', data);
+      if (data.type === 'validation') {
+        // handleErrors(data);
+        return;
+      }
     })
     .catch((error) => {
       console.warn('ivyko klaida createPost:', error);
