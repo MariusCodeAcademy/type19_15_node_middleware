@@ -4,6 +4,7 @@ console.log('add.js file was loaded');
 // nusitaikyti i forma ir inputus
 // surinkiti inputus i objeka ir isiusti ji i backend
 // jei sekmingai sukurtas postas, naviguoti i index.html
+// window.location.href = '';
 
 // backe yra vaildacija title ir autoriui
 // A pranesti bendru pranesimu (sukurti/atslepti alert elementa)

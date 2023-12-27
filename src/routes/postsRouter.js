@@ -20,9 +20,7 @@ postsRouter.get('/api/posts', reqTime, async (req, res) => {
 postsRouter.post('/api/posts', validatePost, async (req, res) => {
   // panaudoti dbQueryWithData kad sukurti nauja post
   // pasiimam atsiustas reiksmes
-  const {
-    title, author, date, body,
-  } = req.body;
+  const { title, author, date, body } = req.body;
 
   const sql = `INSERT INTO posts 
     (title, author, date, body) 
@@ -36,6 +34,10 @@ postsRouter.post('/api/posts', validatePost, async (req, res) => {
 
   console.log('error ===', error);
 
+  if (resulObj.affectedRows === 1) {
+    res.status(201).end();
+    return;
+  }
   res.json(resulObj);
 });
 
