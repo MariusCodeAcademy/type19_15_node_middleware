@@ -37,4 +37,33 @@ authRouter.post('/api/auth/login', async (req, res) => {
   }
 });
 
+// POST - /api/auth/register - username ir password sukuria nauja vartotoja
+authRouter.post('/api/auth/register', async (req, res) => {
+  const { username, password } = req.body;
+  // validation
+  const sql = `
+  INSERT INTO users (username, password)
+  VALUES (?, ?)
+  `;
+  const [rows, error] = await dbQueryWithData(sql, [username, password]);
+
+  // error
+  console.log('error ===', error);
+  if (error.code === 'ER_DUP_ENTRY') {
+    res.status(400).json({
+      error: 'username alreay exists',
+    });
+    return;
+  }
+
+  if (rows.affectedRows === 1) {
+    res.status(201).json('user created');
+    return;
+  }
+  res.status(500).json({
+    msg: 'no rows affected',
+    rows,
+  });
+});
+
 module.exports = authRouter;
