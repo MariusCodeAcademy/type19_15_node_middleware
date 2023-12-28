@@ -13,6 +13,9 @@ postsRouter.get('/api/posts', reqTime, async (req, res) => {
   const [rows, error] = await dbQueryWithData(sql);
 
   console.log('error ===', error);
+  if (error) {
+    res.status(500).json({ error: 'something went wrong' });
+  }
 
   res.json(rows);
 });
