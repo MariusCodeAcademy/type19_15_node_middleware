@@ -1,4 +1,3 @@
-'use strict';
 console.log('front.js file was loaded');
 
 const baseUrl = 'http://localhost:3000/api';
@@ -38,31 +37,12 @@ const els = {
     els.postsContainer.append(...elArr);
   }
 
-  function getPosts(url) {
-    return fetch(url)
-      .then((resp) => {
-        console.log('resp ===', resp);
-        return resp.json();
-      })
-      .then((data) => {
-        // console.log('data ===', data);
-        return data;
-      })
-      .catch((error) => {
-        console.warn('ivyko klaida getPosts:', error);
-        if (error.message === 'Failed to fetch') {
-          showError('Something went wrong, try again later');
-        }
-        console.log('error.message ===', error.message);
-      });
-  }
-
   function showError(msg) {
     els.errorTop.textContent = msg;
   }
-  function clearErrors() {
-    els.errorTop.textContent = '';
-  }
+  // function clearErrors() {
+  //   els.errorTop.textContent = '';
+  // }
 
   /*
 {
@@ -106,6 +86,7 @@ async function getDataFetch(url) {
   try {
     const resp = await fetch(url);
     if (resp.ok === false) {
+      // eslint-disable-next-line no-throw-literal
       throw {
         status: resp.status,
         message: resp.statusText,

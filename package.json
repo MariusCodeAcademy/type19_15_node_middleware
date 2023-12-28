@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "lintf": "eslint src --fix"
+    "lintf": "eslint src --fix",
+    "lintfr": "eslint front-end --fix"
   },
   "keywords": [],
   "author": "Marius K.",

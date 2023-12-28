@@ -1,4 +1,3 @@
-'use strict';
 console.log('add.js file was loaded');
 
 const postsUrl = 'http://localhost:3000/api/posts';
@@ -59,7 +58,7 @@ function createPost(postObj) {
       console.log('data ===', data);
       if (data.type === 'validation') {
         // handleErrors(data);
-        return;
+
       }
     })
     .catch((error) => {
