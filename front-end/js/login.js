@@ -7,6 +7,7 @@ const els = {
   form: document.getElementById('login-form'),
   username: document.getElementById('username'),
   password: document.getElementById('password'),
+  errorTop: document.getElementById('error-el-top'),
 };
 // formai event listeneri
 els.form.addEventListener('submit', login);
@@ -29,6 +30,10 @@ function login(event) {
   loginUser(loginObj);
 }
 
+function showError(msg) {
+  els.errorTop.textContent = msg;
+}
+
 function loginUser(loginObj) {
   const options = {
     method: 'POST',
@@ -43,6 +48,8 @@ function loginUser(loginObj) {
       console.log('resp ===', resp);
       if (resp.status === 200) {
         // alert('post was created');
+        console.log('issaugti sesijos kintamaji');
+        sessionStorage.setItem('loggedIn', loginObj.username);
         window.location.href = 'index.html';
         // return;
       }
@@ -50,27 +57,9 @@ function loginUser(loginObj) {
     })
     .then((data) => {
       console.log('data ===', data);
-      if (data.type === 'validation') {
-        alert(data.msg);
-      }
+      showError(data.msg);
     })
     .catch((error) => {
       console.warn('ivyko klaida loginUser:', error);
-    });
-}
-
-// create a reusable function for fetching data that is easy to use and check for errors
-function getData(url) {
-  return fetch(url)
-    .then((resp) => {
-      if (resp.status >= 200 && resp.status <= 299) {
-        return resp.json();
-      }
-      return resp.json().then((data) => {
-        throw new Error(data.msg);
-      });
-    })
-    .catch((error) => {
-      console.warn('ivyko klaida getData:', error);
     });
 }

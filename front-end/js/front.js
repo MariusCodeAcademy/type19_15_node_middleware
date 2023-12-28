@@ -8,6 +8,14 @@ const els = {
   errorTop: document.getElementById('error-el-top'),
 };
 
+let isLoggedIn = sessionStorage.getItem('loggedIn');
+console.log('isLoggedIn ===', isLoggedIn);
+isLoggedIn = Boolean(isLoggedIn);
+console.log('isLoggedIn ===', isLoggedIn);
+if (isLoggedIn === false) {
+  window.location.href = 'login.html';
+}
+
 //
 (async () => {
   // iffe body

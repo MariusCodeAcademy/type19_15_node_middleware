@@ -17,7 +17,7 @@ authRouter.post('/api/auth/login', async (req, res) => {
   // neradom
   if (rows.length === 0) {
     res.status(400).json({
-      msg: 'username not fount (dev)',
+      msg: 'username not found (dev)',
     });
     return;
   }

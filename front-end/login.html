@@ -12,6 +12,7 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"
     defer></script>
   <title>Login</title>
+  <link rel="stylesheet" href="style.css">
   <script src="js/login.js" defer></script>
 </head>
 
@@ -20,12 +21,13 @@
   <div class="container">
 
     <h1>Login</h1>
+    <div id="error-el-top" class="alert alert-danger" role="alert"></div>
 
     <!-- create a form to enter username and password -->
     <form id="login-form">
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
-        <input type="text" id="username" name="username" class="form-control">
+        <input value="james@band.com" type="text" id="username" name="username" class="form-control">
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
